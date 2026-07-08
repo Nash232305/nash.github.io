@@ -19,7 +19,6 @@ type Quadrant = {
   image: string;
   imageAlt: string;
   palette: string;
-  accent: string;
 };
 
 const quadrants: Quadrant[] = [
@@ -33,7 +32,6 @@ const quadrants: Quadrant[] = [
     image: hengerlynChildhood,
     imageAlt: 'Hengerlyn de niña sosteniendo un peluche',
     palette: 'palette-identity',
-    accent: '#7c5cff',
   },
   {
     id: 'de-donde-vengo',
@@ -45,7 +43,6 @@ const quadrants: Quadrant[] = [
     image: limonOrigin,
     imageAlt: 'Parque Vargas en Limón, Costa Rica',
     palette: 'palette-origin',
-    accent: '#ffb35c',
   },
   {
     id: 'hacia-donde-voy',
@@ -57,7 +54,6 @@ const quadrants: Quadrant[] = [
     image: studentsCommunity,
     imageAlt: 'Estudiantes reunidos usando una laptop',
     palette: 'palette-future',
-    accent: '#36d1dc',
   },
   {
     id: 'que-me-representa',
@@ -69,14 +65,34 @@ const quadrants: Quadrant[] = [
     image: greenSeedling,
     imageAlt: 'Brote verde creciendo desde la tierra',
     palette: 'palette-symbol',
-    accent: '#62d26f',
+  },
+];
+
+const fullStory = [
+  {
+    title: 'Quién soy',
+    text: 'Soy Hengerlyn Nash, una mujer resiliente. Crecí viendo fortaleza en mi mamá, y esa historia me enseñó a adaptarme, esforzarme y seguir creyendo en mí.',
+  },
+  {
+    title: 'De dónde vengo',
+    text: 'Vengo de Limón y de una familia sostenida por una mujer fuerte. Mi mamá fue madre y padre al mismo tiempo. Estar cerca de graduarme representa más que un título: es una forma de honrar su esfuerzo.',
+  },
+  {
+    title: 'Hacia dónde quiero ir',
+    text: 'Quiero que lo que aprendo sirva para algo más grande que yo. Me interesa usar la tecnología para abrir oportunidades, compartir conocimiento y ayudar a estudiantes o comunidades que también buscan salir adelante.',
+  },
+  {
+    title: 'Qué me representa',
+    text: 'Me representa el verde: crecimiento, esperanza y nuevos comienzos. Verde de raíces, de vida y de la capacidad de florecer incluso cuando el terreno no ha sido fácil.',
   },
 ];
 
 export default function App() {
-  const [activeQuadrant, setActiveQuadrant] = useState(0);
+  const [activeSection, setActiveSection] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isStoryOpen, setIsStoryOpen] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const closingRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -88,10 +104,15 @@ export default function App() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = sectionRefs.current.indexOf(entry.target as HTMLElement);
-            if (index !== -1) setActiveQuadrant(index);
+          if (!entry.isIntersecting) return;
+
+          if (entry.target === closingRef.current) {
+            setActiveSection(quadrants.length);
+            return;
           }
+
+          const index = sectionRefs.current.indexOf(entry.target as HTMLElement);
+          if (index !== -1) setActiveSection(index);
         });
       },
       { threshold: 0.45 },
@@ -100,6 +121,7 @@ export default function App() {
     sectionRefs.current.forEach((section) => {
       if (section) observer.observe(section);
     });
+    if (closingRef.current) observer.observe(closingRef.current);
 
     return () => observer.disconnect();
   }, []);
@@ -113,7 +135,12 @@ export default function App() {
     return () => document.removeEventListener('fullscreenchange', updateFullscreenState);
   }, []);
 
-  const scrollToQuadrant = (index: number) => {
+  const scrollToSection = (index: number) => {
+    if (index === quadrants.length) {
+      closingRef.current?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -139,17 +166,25 @@ export default function App() {
           {isFullscreen ? '×' : '⛶'}
         </button>
 
-        <nav className="quadrant-nav" aria-label="Navegación de cuadrantes">
+        <nav className="quadrant-nav" aria-label="Navegación de secciones">
           {quadrants.map((quadrant, index) => (
             <button
               key={quadrant.id}
-              className={index === activeQuadrant ? 'active' : ''}
-              onClick={() => scrollToQuadrant(index)}
+              className={index === activeSection ? 'active' : ''}
+              onClick={() => scrollToSection(index)}
               aria-label={quadrant.question}
             >
               {quadrant.number}
             </button>
           ))}
+          <button
+            className={activeSection === quadrants.length ? 'active nav-star' : 'nav-star'}
+            onClick={() => scrollToSection(quadrants.length)}
+            aria-label="Ir al cierre"
+            title="Ir al cierre"
+          >
+            ★
+          </button>
         </nav>
 
         <section className="opening">
@@ -161,6 +196,9 @@ export default function App() {
               y esperanza.
             </p>
             <div className="opening-meta">Hengerlyn Nash · TEC · Limón, Costa Rica</div>
+            <button className="story-trigger story-trigger-light" onClick={() => setIsStoryOpen(true)}>
+              Leer mi historia completa
+            </button>
           </div>
         </section>
 
@@ -181,11 +219,14 @@ export default function App() {
               <h2>{quadrant.question}</h2>
               <h3>{quadrant.headline}</h3>
               <p>{quadrant.text}</p>
+              <button className="story-trigger" onClick={() => setIsStoryOpen(true)}>
+                Leer más
+              </button>
             </div>
           </section>
         ))}
 
-        <section className="closing">
+        <section className="closing" ref={closingRef}>
           <div className="closing-background" aria-hidden="true">
             <img className="closing-photo closing-photo-main" src={puertoViejoBeach} alt="" />
             <img className="closing-photo closing-photo-top" src={limonCoast} alt="" />
@@ -196,8 +237,31 @@ export default function App() {
             <span>Esta historia apenas comienza.</span>
             <h2>De mis raíces al impacto.</h2>
             <p>Lista para aprender, aportar y seguir creciendo con propósito.</p>
+            <button className="story-trigger story-trigger-light" onClick={() => setIsStoryOpen(true)}>
+              Leer historia completa
+            </button>
           </div>
         </section>
+
+        {isStoryOpen && (
+          <div className="story-modal" role="dialog" aria-modal="true" aria-label="Historia completa">
+            <div className="story-modal-card">
+              <button className="story-modal-close" onClick={() => setIsStoryOpen(false)} aria-label="Cerrar">
+                ×
+              </button>
+              <span className="story-modal-eyebrow">Historia completa</span>
+              <h2>Raíces fuertes, propósito claro</h2>
+              <div className="story-modal-grid">
+                {fullStory.map((item) => (
+                  <article key={item.title}>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </>
   );
