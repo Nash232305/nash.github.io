@@ -16,6 +16,8 @@ type Quadrant = {
   headline: string;
   badge: string;
   text: string;
+  script: string;
+  duration: string;
   image: string;
   imageAlt: string;
   palette: string;
@@ -29,6 +31,9 @@ const quadrants: Quadrant[] = [
     headline: 'Soy resiliencia que aprende mientras avanza.',
     badge: 'Resiliencia + tecnología',
     text: 'Crecí viendo resiliencia en mi mamá. Hoy esa fuerza se convierte en curiosidad, disciplina y ganas de crecer en tecnología.',
+    script:
+      'Si me preguntan quién soy, la respuesta es simple: soy una mujer resiliente. No porque lo haya decidido un día, sino porque es lo que me tocó ser desde niña. Crecí viendo resiliencia todos los días, en la persona que más admiro en este mundo.',
+    duration: '≈15 segundos',
     image: hengerlynChildhood,
     imageAlt: 'Hengerlyn de niña sosteniendo un peluche',
     palette: 'palette-identity',
@@ -40,6 +45,9 @@ const quadrants: Quadrant[] = [
     headline: 'Vengo de Limón y de una mujer fuerte.',
     badge: 'Raíces + familia',
     text: 'Mi mamá fue madre y padre al mismo tiempo. Ser la primera de mi familia en estar a punto de graduarme es una forma de honrar su esfuerzo.',
+    script:
+      'Vengo de Limón. De una casa donde mi mamá fue madre y padre al mismo tiempo. No tuvo un camino fácil: trabajó duro, sacrificó mucho, y nunca se rindió, aunque las circunstancias no siempre estuvieron a su favor. Hoy soy la primera de mi familia en estar a punto de graduarme de la universidad. No es solo un título para mí, es la prueba de que su esfuerzo no fue en vano, y de que puedo abrirle camino a los que vienen después.',
+    duration: '≈30 segundos',
     image: limonOrigin,
     imageAlt: 'Parque Vargas en Limón, Costa Rica',
     palette: 'palette-origin',
@@ -51,6 +59,9 @@ const quadrants: Quadrant[] = [
     headline: 'Quiero ayudar a estudiantes y comunidades a crecer.',
     badge: 'Propósito + impacto',
     text: 'No busco solo un trabajo; busco propósito. Quiero usar la tecnología para abrir oportunidades, compartir conocimiento y apoyar a personas que también quieren salir adelante.',
+    script:
+      'Hacia dónde quiero ir es algo que he pensado mucho, y para mí es simple: quiero que todo lo que aprendí sirva para algo más grande que yo misma. No busco solo un trabajo, busco un propósito. Quiero llevar mi conocimiento a proyectos que generen un impacto real y positivo en la sociedad, empezando por las comunidades que me formaron, como Limón.',
+    duration: '≈22 segundos',
     image: studentsCommunity,
     imageAlt: 'Estudiantes reunidos usando una laptop',
     palette: 'palette-future',
@@ -62,35 +73,19 @@ const quadrants: Quadrant[] = [
     headline: 'Me representa el verde: crecer con esperanza.',
     badge: 'Verde + esperanza',
     text: 'Verde de raíces, esperanza y nuevos comienzos. Así soy yo: de Limón, hija de una mujer fuerte y lista para seguir creciendo.',
+    script:
+      'Y si tuviera que representarme con algo, sería el verde. Verde de lo que crece incluso cuando el terreno no es fácil. Verde de esperanza. Verde de lo que siempre encuentra la forma de empezar de nuevo. Así soy yo: de Limón, hija de una guerrera, y lista para seguir creciendo donde me den la oportunidad.',
+    duration: '≈20 segundos',
     image: greenSeedling,
     imageAlt: 'Brote verde creciendo desde la tierra',
     palette: 'palette-symbol',
   },
 ];
 
-const fullStory = [
-  {
-    title: 'Quién soy',
-    text: 'Soy Hengerlyn Nash, una mujer resiliente. Crecí viendo fortaleza en mi mamá, y esa historia me enseñó a adaptarme, esforzarme y seguir creyendo en mí.',
-  },
-  {
-    title: 'De dónde vengo',
-    text: 'Vengo de Limón y de una familia sostenida por una mujer fuerte. Mi mamá fue madre y padre al mismo tiempo. Estar cerca de graduarme representa más que un título: es una forma de honrar su esfuerzo.',
-  },
-  {
-    title: 'Hacia dónde quiero ir',
-    text: 'Quiero que lo que aprendo sirva para algo más grande que yo. Me interesa usar la tecnología para abrir oportunidades, compartir conocimiento y ayudar a estudiantes o comunidades que también buscan salir adelante.',
-  },
-  {
-    title: 'Qué me representa',
-    text: 'Me representa el verde: crecimiento, esperanza y nuevos comienzos. Verde de raíces, de vida y de la capacidad de florecer incluso cuando el terreno no ha sido fácil.',
-  },
-];
-
 export default function App() {
   const [activeSection, setActiveSection] = useState(0);
+  const [expandedQuadrant, setExpandedQuadrant] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isStoryOpen, setIsStoryOpen] = useState(false);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const closingRef = useRef<HTMLElement | null>(null);
 
@@ -153,6 +148,10 @@ export default function App() {
     await document.exitFullscreen();
   };
 
+  const toggleQuadrantScript = (quadrantId: string) => {
+    setExpandedQuadrant((current) => (current === quadrantId ? null : quadrantId));
+  };
+
   return (
     <>
       <WelcomeAnimation />
@@ -196,35 +195,51 @@ export default function App() {
               y esperanza.
             </p>
             <div className="opening-meta">Hengerlyn Nash · TEC · Limón, Costa Rica</div>
-            <button className="story-trigger story-trigger-light" onClick={() => setIsStoryOpen(true)}>
-              Leer mi historia completa
-            </button>
           </div>
         </section>
 
-        {quadrants.map((quadrant, index) => (
-          <section
-            key={quadrant.id}
-            className={`story-panel ${quadrant.palette} panel-${quadrant.id}`}
-            ref={(element) => {
-              sectionRefs.current[index] = element;
-            }}
-          >
-            <div className="panel-image">
-              <img src={quadrant.image} alt={quadrant.imageAlt} />
-            </div>
-            <div className="panel-copy">
-              <span className="panel-number">{quadrant.number}</span>
-              <span className="panel-badge">{quadrant.badge}</span>
-              <h2>{quadrant.question}</h2>
-              <h3>{quadrant.headline}</h3>
-              <p>{quadrant.text}</p>
-              <button className="story-trigger" onClick={() => setIsStoryOpen(true)}>
-                Leer más
-              </button>
-            </div>
-          </section>
-        ))}
+        {quadrants.map((quadrant, index) => {
+          const isExpanded = expandedQuadrant === quadrant.id;
+
+          return (
+            <section
+              key={quadrant.id}
+              className={`story-panel ${quadrant.palette} panel-${quadrant.id}`}
+              ref={(element) => {
+                sectionRefs.current[index] = element;
+              }}
+            >
+              <div className="panel-image">
+                <img src={quadrant.image} alt={quadrant.imageAlt} />
+              </div>
+              <div className="panel-copy">
+                <span className="panel-number">{quadrant.number}</span>
+                <span className="panel-badge">{quadrant.badge}</span>
+                <h2>{quadrant.question}</h2>
+                <h3>{quadrant.headline}</h3>
+                <p>{quadrant.text}</p>
+                <button
+                  className={isExpanded ? 'story-trigger story-trigger-open' : 'story-trigger'}
+                  onClick={() => toggleQuadrantScript(quadrant.id)}
+                  aria-expanded={isExpanded}
+                  aria-controls={`script-${quadrant.id}`}
+                >
+                  {isExpanded ? 'Ocultar guion' : 'Leer más'}
+                </button>
+                <div
+                  id={`script-${quadrant.id}`}
+                  className={isExpanded ? 'quadrant-script is-open' : 'quadrant-script'}
+                >
+                  <div className="script-header">
+                    <strong>Cuadrante {quadrant.number}</strong>
+                    <span>{quadrant.duration}</span>
+                  </div>
+                  <p>{quadrant.script}</p>
+                </div>
+              </div>
+            </section>
+          );
+        })}
 
         <section className="closing" ref={closingRef}>
           <div className="closing-background" aria-hidden="true">
@@ -237,31 +252,8 @@ export default function App() {
             <span>Esta historia apenas comienza.</span>
             <h2>De mis raíces al impacto.</h2>
             <p>Lista para aprender, aportar y seguir creciendo con propósito.</p>
-            <button className="story-trigger story-trigger-light" onClick={() => setIsStoryOpen(true)}>
-              Leer historia completa
-            </button>
           </div>
         </section>
-
-        {isStoryOpen && (
-          <div className="story-modal" role="dialog" aria-modal="true" aria-label="Historia completa">
-            <div className="story-modal-card">
-              <button className="story-modal-close" onClick={() => setIsStoryOpen(false)} aria-label="Cerrar">
-                ×
-              </button>
-              <span className="story-modal-eyebrow">Historia completa</span>
-              <h2>Raíces fuertes, propósito claro</h2>
-              <div className="story-modal-grid">
-                {fullStory.map((item) => (
-                  <article key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </main>
     </>
   );
