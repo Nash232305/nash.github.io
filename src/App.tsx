@@ -72,7 +72,7 @@ const quadrants: Quadrant[] = [
     badge: 'Verde + esperanza',
     text: 'Verde de raíces, esperanza y nuevos comienzos. Así soy yo: de Limón, hija de una mujer fuerte y lista para seguir creciendo.',
     script:
-      'Y si tuviera que representarme con algo, sería el verde. Verde de lo que crece incluso cuando el terreno no es fácil. Verde de esperanza. Verde de lo que siempre encuentra la forma de empezar de nuevo. Así soy yo: de Limón, hija de una guerrera, y lista para seguir creciendo donde me den la oportunidad.',
+      'Y si tuviera que representarme con algo, sería el verde. Para mí significa crecimiento, esperanza y la capacidad de empezar de nuevo incluso cuando el camino no ha sido fácil. Así soy yo: de Limón, hija de una guerrera, y lista para seguir creciendo, aprender con disciplina y aportar con propósito.',
     image: greenSeedling,
     imageAlt: 'Brote verde creciendo desde la tierra',
     palette: 'palette-symbol',
@@ -233,7 +233,7 @@ export default function App() {
                   aria-expanded={isExpanded}
                   aria-controls={`script-${quadrant.id}`}
                 >
-                  {isExpanded ? 'Ocultar guion' : 'Leer más'}
+                  {isExpanded ? 'Ver menos' : 'Leer más'}
                 </button>
                 <div
                   id={`script-${quadrant.id}`}
