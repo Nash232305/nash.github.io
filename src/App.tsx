@@ -125,6 +125,20 @@ export default function App() {
     return () => document.removeEventListener('fullscreenchange', updateFullscreenState);
   }, []);
 
+  useEffect(() => {
+    if (!expandedQuadrant) return;
+
+    let lastScrollY = window.scrollY;
+    const closeScriptOnScroll = () => {
+      if (Math.abs(window.scrollY - lastScrollY) < 12) return;
+      setExpandedQuadrant(null);
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener('scroll', closeScriptOnScroll, { passive: true });
+    return () => window.removeEventListener('scroll', closeScriptOnScroll);
+  }, [expandedQuadrant]);
+
   const scrollToSection = (index: number) => {
     if (index === quadrants.length) {
       closingRef.current?.scrollIntoView({ behavior: 'smooth' });
