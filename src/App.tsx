@@ -1,200 +1,204 @@
 import { useEffect, useRef, useState } from 'react';
-import StoryScene from './components/StoryScene';
 import WelcomeAnimation from './components/WelcomeAnimation';
 import './styles/App.css';
+import hengerlynChildhood from './assets/story/hengerlyn-childhood.jpg';
+import limonOrigin from './assets/story/limon-origin.jpg';
+import studentsCommunity from './assets/story/students-community-laptop-optimized.jpg';
+import greenSeedling from './assets/story/green-seedling.jpg';
+import limonCoast from './assets/collage/limon-coast.jpg';
+import puertoViejoBeach from './assets/collage/puerto-viejo-beach.jpg';
+import puertoViejoSeven from './assets/collage/puerto-viejo-7-optimized.jpg';
 
-const chapters = [
+type Quadrant = {
+  id: string;
+  number: string;
+  question: string;
+  headline: string;
+  badge: string;
+  text: string;
+  image: string;
+  imageAlt: string;
+  palette: string;
+  accent: string;
+};
+
+const quadrants: Quadrant[] = [
   {
-    id: 'historia',
-    icon: '\u{1F3E0}',
-    title: '\u00BFD\u00F3nde he estado?',
-    subtitle: 'Mi Historia',
-    gradient: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)',
-    content: 'Nac\u00ED en San Jos\u00E9, pero casi toda mi crianza fue en Lim\u00F3n, Costa Rica. Vengo de una familia liderada por mi madre soltera, quien con enorme esfuerzo y valent\u00EDa sac\u00F3 adelante a sus 4 hijos. Su ejemplo de sacrificio y fortaleza me ense\u00F1\u00F3 que no hay obst\u00E1culo imposible. Desde peque\u00F1a he sido amante de la tecnolog\u00EDa y el aprendizaje, siempre curiosa por entender c\u00F3mo funcionan las cosas y con ganas de superarme.'
+    id: 'quien-soy',
+    number: '01',
+    question: '¿Quién soy?',
+    headline: 'Soy resiliencia que aprende mientras avanza.',
+    badge: 'Resiliencia + tecnología',
+    text: 'Crecí viendo resiliencia en mi mamá. Hoy esa fuerza se convierte en curiosidad, disciplina y ganas de crecer en tecnología.',
+    image: hengerlynChildhood,
+    imageAlt: 'Hengerlyn de niña sosteniendo un peluche',
+    palette: 'palette-identity',
+    accent: '#7c5cff',
   },
   {
-    id: 'presente',
-    icon: '\u{1F393}',
-    title: '\u00BFD\u00F3nde estoy ahora?',
-    subtitle: 'Mi Presente',
-    gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-    content: 'Actualmente soy estudiante universitaria en el TEC, apasionada por la tecnolog\u00EDa y el aprendizaje continuo. Cada d\u00EDa trabajo en construir una base s\u00F3lida de conocimientos que me permita enfrentar los retos del futuro con confianza y creatividad.'
+    id: 'de-donde-vengo',
+    number: '02',
+    question: '¿De dónde vengo?',
+    headline: 'Vengo de Limón y de una mujer fuerte.',
+    badge: 'Raíces + familia',
+    text: 'Mi mamá fue madre y padre al mismo tiempo. Ser la primera de mi familia en estar a punto de graduarme es una forma de honrar su esfuerzo.',
+    image: limonOrigin,
+    imageAlt: 'Parque Vargas en Limón, Costa Rica',
+    palette: 'palette-origin',
+    accent: '#ffb35c',
   },
   {
-    id: 'futuro',
-    icon: '\u{1F680}',
-    title: '\u00BFA d\u00F3nde quiero llegar?',
-    subtitle: 'Mi Futuro',
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    content: 'Corto plazo: en un a\u00F1o quiero dominar las tecnolog\u00EDas que estudio y obtener experiencia laboral real. Largo plazo: en 10-15 a\u00F1os me veo liderando proyectos innovadores, con estabilidad financiera y aportando al desarrollo tecnol\u00F3gico de Costa Rica.'
+    id: 'hacia-donde-voy',
+    number: '03',
+    question: '¿Hacia dónde quiero ir?',
+    headline: 'Quiero ayudar a estudiantes y comunidades a crecer.',
+    badge: 'Propósito + impacto',
+    text: 'No busco solo un trabajo; busco propósito. Quiero usar la tecnología para abrir oportunidades, compartir conocimiento y apoyar a personas que también quieren salir adelante.',
+    image: studentsCommunity,
+    imageAlt: 'Estudiantes reunidos usando una laptop',
+    palette: 'palette-future',
+    accent: '#36d1dc',
   },
   {
-    id: 'metodos',
-    icon: '\u{1F6E4}\uFE0F',
-    title: '\u00BFC\u00F3mo llegar\u00E9 ah\u00ED?',
-    subtitle: 'Mis M\u00E9todos',
-    gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    content: 'Mediante estudio constante, proyectos personales, networking profesional, mentor\u00EDas y participaci\u00F3n activa en la comunidad tecnol\u00F3gica. Cada d\u00EDa es una oportunidad para aprender algo nuevo y acercarme a mis metas.'
+    id: 'que-me-representa',
+    number: '04',
+    question: '¿Qué me representa?',
+    headline: 'Me representa el verde: crecer con esperanza.',
+    badge: 'Verde + esperanza',
+    text: 'Verde de raíces, esperanza y nuevos comienzos. Así soy yo: de Limón, hija de una mujer fuerte y lista para seguir creciendo.',
+    image: greenSeedling,
+    imageAlt: 'Brote verde creciendo desde la tierra',
+    palette: 'palette-symbol',
+    accent: '#62d26f',
   },
-  {
-    id: 'medidas',
-    icon: '\u{1F3C6}',
-    title: '\u00BFC\u00F3mo sabr\u00E9 si he llegado?',
-    subtitle: 'Mis Medidas',
-    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    content: 'Lo sabr\u00E9 cuando logre mis metas profesionales, cuando pueda vivir de lo que me apasiona, cuando tenga la capacidad de ayudar a otros y cuando mire hacia atr\u00E1s y vea un camino de crecimiento constante.'
-  },
-  {
-    id: 'pasion',
-    icon: '\u{1F525}',
-    title: '\u00BFQu\u00E9 me apasiona?',
-    subtitle: 'Mi Pasi\u00F3n',
-    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    content: 'Me apasiona la tecnolog\u00EDa, resolver problemas complejos, crear soluciones que impacten positivamente a las personas, aprender cosas nuevas y compartir conocimiento con otros.'
-  },
-  {
-    id: 'fortalezas',
-    icon: '\u2B50',
-    title: '\u00BFEn qu\u00E9 soy la mejor?',
-    subtitle: 'Mis Fortalezas',
-    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    content: 'Soy la mejor resolviendo problemas de forma creativa, aprendiendo r\u00E1pidamente nuevas tecnolog\u00EDas, colaborando en equipo y manteniendo la motivaci\u00F3n incluso frente a los desaf\u00EDos m\u00E1s dif\u00EDciles.'
-  },
-  {
-    id: 'impacto',
-    icon: '\u{1F30D}',
-    title: '\u00BFC\u00F3mo voy a cambiar el mundo?',
-    subtitle: 'Mi Impacto',
-    gradient: 'linear-gradient(135deg, #0ba360 0%, #3cba92 100%)',
-    content: 'Quiero cambiar el mundo creando soluciones tecnol\u00F3gicas accesibles que mejoren la vida de las personas, especialmente en comunidades con menos oportunidades. La tecnolog\u00EDa tiene el poder de democratizar el conocimiento y las oportunidades.'
-  },
-  {
-    id: 'filosofia',
-    icon: '\u{1F4A1}',
-    title: '\u00BFCu\u00E1l es mi filosof\u00EDa para vivir?',
-    subtitle: 'Mi Filosof\u00EDa',
-    gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-    content: 'Vivir con prop\u00F3sito, aprender siempre, ser honesta y ayudar a los dem\u00E1s. Creo que el \u00E9xito verdadero no se mide solo por logros profesionales, sino por el impacto positivo que dejamos en quienes nos rodean.'
-  },
-  {
-    id: 'personas',
-    icon: '\u{1F49C}',
-    title: '\u00BFA qui\u00E9n quiero cambiarles la vida?',
-    subtitle: 'Mi Gente',
-    gradient: 'linear-gradient(135deg, #c471f5 0%, #fa71cd 100%)',
-    content: 'Quiero cambiar la vida de mi mam\u00E1 y mis hermanos, retribuyendo todo su esfuerzo y sacrificio. Tambi\u00E9n de los j\u00F3venes que, como yo, vienen de familias humildes y buscan oportunidades para crecer profesionalmente, y de las comunidades de Lim\u00F3n que necesitan acceso a la tecnolog\u00EDa.'
-  }
 ];
 
 export default function App() {
-  const [activeChapter, setActiveChapter] = useState(-1);
-  const chapterRefs = useRef<(HTMLElement | null)[]>([]);
+  const [activeQuadrant, setActiveQuadrant] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 600;
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const idx = chapterRefs.current.indexOf(entry.target as HTMLElement);
-            if (idx !== -1) setActiveChapter(idx);
-            entry.target.classList.add('revealed');
+            const index = sectionRefs.current.indexOf(entry.target as HTMLElement);
+            if (index !== -1) setActiveQuadrant(index);
           }
         });
       },
-      { threshold: isMobile ? 0.1 : 0.25 }
+      { threshold: 0.45 },
     );
 
-    chapterRefs.current.forEach((el) => {
-      if (el) observer.observe(el);
+    sectionRefs.current.forEach((section) => {
+      if (section) observer.observe(section);
     });
 
     return () => observer.disconnect();
   }, []);
 
-  const scrollTo = (idx: number) => {
-    chapterRefs.current[idx]?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const updateFullscreenState = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener('fullscreenchange', updateFullscreenState);
+    return () => document.removeEventListener('fullscreenchange', updateFullscreenState);
+  }, []);
+
+  const scrollToQuadrant = (index: number) => {
+    sectionRefs.current[index]?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const toggleFullscreen = async () => {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+      return;
+    }
+
+    await document.exitFullscreen();
   };
 
   return (
     <>
       <WelcomeAnimation />
-      <div className="story">
-      {/* ---- Progress Nav ---- */}
-      <nav className="story-nav">
-        {chapters.map((ch, i) => (
-          <button
-            key={ch.id}
-            className={`nav-dot ${i === activeChapter ? 'active' : ''} ${i < activeChapter ? 'passed' : ''}`}
-            onClick={() => scrollTo(i)}
-            aria-label={ch.subtitle}
-          >
-            <span className="nav-dot-tooltip">{ch.icon} {ch.subtitle}</span>
-          </button>
-        ))}
-      </nav>
+      <main className="prework-page">
+        <button
+          className="fullscreen-button"
+          onClick={toggleFullscreen}
+          aria-label={isFullscreen ? 'Salir de pantalla completa' : 'Abrir en pantalla completa'}
+          title={isFullscreen ? 'Salir de pantalla completa' : 'Pantalla completa'}
+        >
+          {isFullscreen ? '×' : '⛶'}
+        </button>
 
-      {/* ---- Hero ---- */}
-      <section className="story-hero">
-        <div className="hero-bg">
-          <div className="hero-orb orb-1"></div>
-          <div className="hero-orb orb-2"></div>
-          <div className="hero-orb orb-3"></div>
-        </div>
-        <div className="hero-content">
-          <div className="hero-avatar">{'\u{1F469}\u{1F3FE}\u200D\u{1F4BB}'}</div>
-          <h1 className="hero-title">Mi Portafolio Personal</h1>
-          <p className="hero-subtitle">La historia de mis metas y sue{'\u00F1'}os</p>
-          <span className="hero-tag">Nash {'\u00B7'} Estudiante TEC {'\u00B7'} Lim{'\u00F3'}n, CR</span>
-          <div className="scroll-cue">
-            <span>Desliza para conocer mi historia</span>
-            <svg className="scroll-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
-              <path d="M12 5v14M19 12l-7 7-7-7" />
-            </svg>
+        <nav className="quadrant-nav" aria-label="Navegación de cuadrantes">
+          {quadrants.map((quadrant, index) => (
+            <button
+              key={quadrant.id}
+              className={index === activeQuadrant ? 'active' : ''}
+              onClick={() => scrollToQuadrant(index)}
+              aria-label={quadrant.question}
+            >
+              {quadrant.number}
+            </button>
+          ))}
+        </nav>
+
+        <section className="opening">
+          <div className="opening-copy">
+            <span className="eyebrow">GenO Oracle Costa Rica</span>
+            <h1>Raíces fuertes, propósito claro</h1>
+            <p>
+              Una historia en cuatro cuadrantes sobre origen, resiliencia, tecnología
+              y esperanza.
+            </p>
+            <div className="opening-meta">Hengerlyn Nash · TEC · Limón, Costa Rica</div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ---- Chapters ---- */}
-      <div className="story-chapters">
-        {chapters.map((ch, i) => (
+        {quadrants.map((quadrant, index) => (
           <section
-            key={ch.id}
-            className={`chapter ${i % 2 === 1 ? 'chapter-alt' : ''}`}
-            ref={(el) => { chapterRefs.current[i] = el; }}
+            key={quadrant.id}
+            className={`story-panel ${quadrant.palette} panel-${quadrant.id}`}
+            ref={(element) => {
+              sectionRefs.current[index] = element;
+            }}
           >
-            <div className="chapter-connector">
-              <div className="connector-line"></div>
-              <div className="connector-dot" style={{ background: ch.gradient }}>{ch.icon}</div>
+            <div className="panel-image">
+              <img src={quadrant.image} alt={quadrant.imageAlt} />
             </div>
-
-            <div className="chapter-inner">
-              <div className="chapter-text-side">
-                <span className="chapter-label">
-                  Cap{'\u00ED'}tulo {String(i + 1).padStart(2, '0')}
-                </span>
-                <h2 className="chapter-title">{ch.title}</h2>
-                <div className="chapter-badge" style={{ background: ch.gradient }}>
-                  {ch.subtitle}
-                </div>
-                <p className="chapter-body">{ch.content}</p>
-              </div>
-              <div className="chapter-scene-side">
-                <StoryScene sceneId={ch.id} />
-              </div>
+            <div className="panel-copy">
+              <span className="panel-number">{quadrant.number}</span>
+              <span className="panel-badge">{quadrant.badge}</span>
+              <h2>{quadrant.question}</h2>
+              <h3>{quadrant.headline}</h3>
+              <p>{quadrant.text}</p>
             </div>
           </section>
         ))}
-      </div>
 
-      {/* ---- Ending ---- */}
-      <section className="story-ending">
-        <span className="ending-sparkle">{'\u2728'}</span>
-        <h2>...y esta historia apenas comienza</h2>
-        <p>Portafolio Personal {'\u2014'} Esp{'\u00ED'}ritu Emprendedor</p>
-        <p className="ending-meta">TEC Costa Rica {'\u2014'} 2026</p>
-      </section>
-      </div>
+        <section className="closing">
+          <div className="closing-background" aria-hidden="true">
+            <img className="closing-photo closing-photo-main" src={puertoViejoBeach} alt="" />
+            <img className="closing-photo closing-photo-top" src={limonCoast} alt="" />
+            <img className="closing-photo closing-photo-side" src={puertoViejoSeven} alt="" />
+            <img className="closing-photo closing-photo-bottom" src={limonOrigin} alt="" />
+          </div>
+          <div className="closing-copy">
+            <span>Esta historia apenas comienza.</span>
+            <h2>De mis raíces al impacto.</h2>
+            <p>Lista para aprender, aportar y seguir creciendo con propósito.</p>
+          </div>
+        </section>
+      </main>
     </>
-  )
+  );
 }
