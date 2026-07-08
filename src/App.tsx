@@ -17,7 +17,6 @@ type Quadrant = {
   badge: string;
   text: string;
   script: string;
-  duration: string;
   image: string;
   imageAlt: string;
   palette: string;
@@ -33,7 +32,6 @@ const quadrants: Quadrant[] = [
     text: 'Crecí viendo resiliencia en mi mamá. Hoy esa fuerza se convierte en curiosidad, disciplina y ganas de crecer en tecnología.',
     script:
       'Si me preguntan quién soy, la respuesta es simple: soy una mujer resiliente. No porque lo haya decidido un día, sino porque es lo que me tocó ser desde niña. Crecí viendo resiliencia todos los días, en la persona que más admiro en este mundo.',
-    duration: '≈15 segundos',
     image: hengerlynChildhood,
     imageAlt: 'Hengerlyn de niña sosteniendo un peluche',
     palette: 'palette-identity',
@@ -47,7 +45,6 @@ const quadrants: Quadrant[] = [
     text: 'Mi mamá fue madre y padre al mismo tiempo. Ser la primera de mi familia en estar a punto de graduarme es una forma de honrar su esfuerzo.',
     script:
       'Vengo de Limón. De una casa donde mi mamá fue madre y padre al mismo tiempo. No tuvo un camino fácil: trabajó duro, sacrificó mucho, y nunca se rindió, aunque las circunstancias no siempre estuvieron a su favor. Hoy soy la primera de mi familia en estar a punto de graduarme de la universidad. No es solo un título para mí, es la prueba de que su esfuerzo no fue en vano, y de que puedo abrirle camino a los que vienen después.',
-    duration: '≈30 segundos',
     image: limonOrigin,
     imageAlt: 'Parque Vargas en Limón, Costa Rica',
     palette: 'palette-origin',
@@ -61,7 +58,6 @@ const quadrants: Quadrant[] = [
     text: 'No busco solo un trabajo; busco propósito. Quiero usar la tecnología para abrir oportunidades, compartir conocimiento y apoyar a personas que también quieren salir adelante.',
     script:
       'Hacia dónde quiero ir es algo que he pensado mucho, y para mí es simple: quiero que todo lo que aprendí sirva para algo más grande que yo misma. No busco solo un trabajo, busco un propósito. Quiero llevar mi conocimiento a proyectos que generen un impacto real y positivo en la sociedad, empezando por las comunidades que me formaron, como Limón.',
-    duration: '≈22 segundos',
     image: studentsCommunity,
     imageAlt: 'Estudiantes reunidos usando una laptop',
     palette: 'palette-future',
@@ -75,7 +71,6 @@ const quadrants: Quadrant[] = [
     text: 'Verde de raíces, esperanza y nuevos comienzos. Así soy yo: de Limón, hija de una mujer fuerte y lista para seguir creciendo.',
     script:
       'Y si tuviera que representarme con algo, sería el verde. Verde de lo que crece incluso cuando el terreno no es fácil. Verde de esperanza. Verde de lo que siempre encuentra la forma de empezar de nuevo. Así soy yo: de Limón, hija de una guerrera, y lista para seguir creciendo donde me den la oportunidad.',
-    duration: '≈20 segundos',
     image: greenSeedling,
     imageAlt: 'Brote verde creciendo desde la tierra',
     palette: 'palette-symbol',
@@ -232,7 +227,6 @@ export default function App() {
                 >
                   <div className="script-header">
                     <strong>Cuadrante {quadrant.number}</strong>
-                    <span>{quadrant.duration}</span>
                   </div>
                   <p>{quadrant.script}</p>
                 </div>
