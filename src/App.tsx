@@ -128,16 +128,11 @@ export default function App() {
   useEffect(() => {
     if (!expandedQuadrant) return;
 
-    let lastScrollY = window.scrollY;
-    const closeScriptOnScroll = () => {
-      if (Math.abs(window.scrollY - lastScrollY) < 12) return;
+    const activeQuadrant = quadrants[activeSection];
+    if (!activeQuadrant || activeQuadrant.id !== expandedQuadrant) {
       setExpandedQuadrant(null);
-      lastScrollY = window.scrollY;
-    };
-
-    window.addEventListener('scroll', closeScriptOnScroll, { passive: true });
-    return () => window.removeEventListener('scroll', closeScriptOnScroll);
-  }, [expandedQuadrant]);
+    }
+  }, [activeSection, expandedQuadrant]);
 
   const scrollToSection = (index: number) => {
     if (index === quadrants.length) {
@@ -204,6 +199,9 @@ export default function App() {
               y esperanza.
             </p>
             <div className="opening-meta">Hengerlyn Nash · TEC · Limón, Costa Rica</div>
+            <div className="opening-curiosity">
+              Curiosidad: aprendo mejor creando, compartiendo y convirtiendo cada reto en impulso.
+            </div>
           </div>
         </section>
 
