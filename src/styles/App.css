@@ -195,21 +195,6 @@ button {
   font-weight: 700;
 }
 
-.opening-curiosity {
-  width: fit-content;
-  max-width: 680px;
-  margin: 22px auto 0;
-  padding: 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  color: rgba(255, 255, 255, 0.88);
-  background: rgba(255, 255, 255, 0.12);
-  font-size: clamp(0.92rem, 1.2vw, 1.04rem);
-  font-weight: 700;
-  line-height: 1.45;
-  backdrop-filter: blur(10px);
-}
-
 .story-trigger {
   width: fit-content;
   margin-top: 26px;
@@ -339,6 +324,21 @@ button {
   color: rgba(19, 32, 25, 0.76);
   font-size: clamp(0.98rem, 1.1vw, 1.12rem);
   line-height: 1.7;
+}
+
+.quadrant-curiosity {
+  max-width: 620px;
+  margin-top: 18px;
+  padding: 14px 18px;
+  border: 1px solid rgba(19, 32, 25, 0.1);
+  border-radius: 20px;
+  color: rgba(19, 32, 25, 0.78);
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 14px 34px rgba(19, 32, 25, 0.1);
+  font-size: clamp(0.92rem, 1vw, 1.02rem);
+  font-weight: 800;
+  line-height: 1.5;
+  backdrop-filter: blur(10px);
 }
 
 .quadrant-script {

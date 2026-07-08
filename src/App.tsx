@@ -17,6 +17,7 @@ type Quadrant = {
   badge: string;
   text: string;
   script: string;
+  curiosity?: string;
   image: string;
   imageAlt: string;
   palette: string;
@@ -30,6 +31,7 @@ const quadrants: Quadrant[] = [
     headline: 'Soy resiliencia que aprende mientras avanza.',
     badge: 'Resiliencia + tecnología',
     text: 'Crecí viendo resiliencia en mi mamá. Hoy esa fuerza se convierte en curiosidad, disciplina y ganas de crecer en tecnología.',
+    curiosity: 'Curiosidad: aprendo mejor creando, compartiendo y convirtiendo cada reto en impulso.',
     script:
       'Si me preguntan quién soy, la respuesta es simple: soy una mujer resiliente. No porque lo haya decidido un día, sino porque es lo que me tocó ser desde niña. Crecí viendo resiliencia todos los días, en la persona que más admiro en este mundo.',
     image: hengerlynChildhood,
@@ -199,9 +201,6 @@ export default function App() {
               y esperanza.
             </p>
             <div className="opening-meta">Hengerlyn Nash · TEC · Limón, Costa Rica</div>
-            <div className="opening-curiosity">
-              Curiosidad: aprendo mejor creando, compartiendo y convirtiendo cada reto en impulso.
-            </div>
           </div>
         </section>
 
@@ -225,6 +224,9 @@ export default function App() {
                 <h2>{quadrant.question}</h2>
                 <h3>{quadrant.headline}</h3>
                 <p>{quadrant.text}</p>
+                {quadrant.curiosity && (
+                  <div className="quadrant-curiosity">{quadrant.curiosity}</div>
+                )}
                 <button
                   className={isExpanded ? 'story-trigger story-trigger-open' : 'story-trigger'}
                   onClick={() => toggleQuadrantScript(quadrant.id)}
