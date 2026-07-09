@@ -4,7 +4,7 @@ import './styles/App.css';
 import hengerlynChildhood from './assets/story/hengerlyn-childhood.jpg';
 import limonOrigin from './assets/story/limon-origin.jpg';
 import studentsCommunity from './assets/story/students-community-laptop-optimized.jpg';
-import greenSeedling from './assets/story/green-seedling.jpg';
+import continuousLearning from './assets/story/continuous-learning-einstein.png';
 import limonCoast from './assets/collage/limon-coast.jpg';
 import puertoViejoBeach from './assets/collage/puerto-viejo-beach.jpg';
 import puertoViejoSeven from './assets/collage/puerto-viejo-7-optimized.jpg';
@@ -73,8 +73,8 @@ const quadrants: Quadrant[] = [
     text: 'Soy autodidacta: cuando algo me interesa, investigo, practico y busco la forma de entenderlo hasta poder aplicarlo.',
     script:
       'Lo que más me representa es la curiosidad. Soy una persona autodidacta: cuando algo me interesa, no me quedo solo con la duda, busco, investigo, practico y aprendo hasta poder aplicarlo. Así he ido construyendo mi camino en tecnología, con disciplina, paciencia y muchas ganas de seguir creciendo. Por eso me interesa tanto el área de inteligencia artificial: porque combina aprendizaje constante, pensamiento lógico y la posibilidad de crear soluciones con impacto.',
-    image: greenSeedling,
-    imageAlt: 'Brote verde creciendo desde la tierra',
+    image: continuousLearning,
+    imageAlt: 'Frase sobre aprendizaje continuo atribuida a Albert Einstein',
     palette: 'palette-symbol',
   },
 ];
