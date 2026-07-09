@@ -355,8 +355,9 @@ button {
 }
 
 .quadrant-script.is-open {
-  max-height: 360px;
+  max-height: min(58vh, 620px);
   margin-top: 20px;
+  overflow-y: auto;
   opacity: 1;
   transform: translateY(0);
 }
@@ -614,7 +615,7 @@ button {
   }
 
   .quadrant-script.is-open {
-    max-height: 520px;
+    max-height: 58vh;
   }
 
   .quadrant-script .script-header {
